@@ -2103,3 +2103,16 @@
     border-radius: 5px;
   }
   
+
+  a {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Use the default text color */
+}
+
+a:hover {
+    text-decoration: underline; /* Add underline on hover if desired */
+}
+
+a:visited {
+    color: inherit; /* Use the default text color for visited links */
+}
