@@ -2110,3 +2110,167 @@ a:hover {
 a:visited {
     color: inherit; /* Use the default text color for visited links */
 }
+
+/* SELF GENERATED CODE */
+
+body {
+  margin: 0;
+}
+
+.container {
+  overflow: hidden;
+}
+
+.details_half {
+  display: flex;
+  width: 50fr;
+  height: 95vh;
+  padding: 100px 162px 524px 162px;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-shrink: 0;
+  z-index: 0;
+}
+
+.img_half {
+  display: flex;
+  width: 50vw;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: -5em;
+}
+
+.login_footer {
+  display: flex;
+  width: 1440px;
+  height: 5px;
+  top: 0;
+  padding: 30px;
+  flex-shrink: 0;
+  background: #FFF;
+  z-index: 0;
+}
+
+.login_main {
+  display: flex;
+  overflow: hidden;
+  border: 0;
+  justify-content: center;
+  height: 90vh;
+  width: 100vw;
+}
+
+.nourish-logo {
+  width: 100px;
+  height: 89px;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.logo {
+  display: flex;
+  width: 23px;
+  height: 23px;
+  flex-shrink: 0;
+  margin-left: 10px;
+  margin-right: 10px;
+  }
+
+.header {
+  color: #000;
+  font-family: Visby Round CF;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 400;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.sub-header {
+  color: #878887;
+  font-family: Visby Round CF;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.login_option {
+  display: flex;
+  width: 396px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 1px solid #D5DBDD;
+  background: #FFF;
+  justify-content: center;
+  margin: 8px;
+}
+
+button {
+  width: 396px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 1px solid #D5DBDD;
+  background: #FFF;
+}
+
+.login_option_text {
+  display: flex;
+  color: #000;
+  font-family: Visby Round CF;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%;
+  margin-top: 12px;
+}
+
+.su {
+  color: #000;
+  font-family: Visby Round CF;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 140%;
+}
+
+.no-acc-p {
+  display: flex;
+  justify-content: center;
+}
+
+.f-pass {
+  display: flex;
+  justify-content: end;
+}
+
+.credentials {
+  width: 396px;
+  height: 48px;
+  flex-shrink: 0;
+  margin: 6px;
+  background-color: #8497651A;
+  border-radius: 0.4em;
+}
+
+.footer-start-element {
+  display: flex;
+  width: 33vw;
+}
+
+.footer-center-element {
+  display: flex;
+  width: 33vw;
+  justify-content: center;
+}
+
+.footer-end-element {
+  display: flex;
+  width: 33vw;
+  justify-content: end;
+}
