@@ -1,0 +1,60 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<body>
+    <div class="container">
+        <div class="login_main">
+            <div class="details_half">
+                <a href="{% url 'home' %}"><img src="/static/images/logo.png"  class="nourish-logo"/></a
+                <h1 class="header">Welcome back</h1>
+                <h3 class="sub-header">Log in to continue using Nourish</h3>
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div>
+                        <input type="text" placeholder="Email or Username" name="email" class="credentials" required>
+                    </div>
+                    <div style="padding-bottom: 1em;">
+                        <input type="password" placeholder="Password" name="password" class="credentials" required>
+                        <a href="#" class="f-pass">Forgot password?</a>
+                    </div>
+                    <div>
+                        <button type="submit" style="border-radius: 5px;
+                        background: #16361F;">
+                        <a style="color: #FFF; font-family: Visby Round CF; font-size: 19px;
+                        font-style: normal;
+                        font-weight: 600;
+                        display: flex;
+                        justify-content: center;
+                        line-height: 100%;">Continue</a></button>
+                        <p style="color: #000;
+                        font-family: Visby Round CF;
+                        font-size: 13px;
+                        font-style: normal;
+                        font-weight: 300;
+                        line-height: 140%; "><a href="#" class="no-acc-p">Don't have an account? 
+                            <span class="su"> Sign up</span></a></p>
+                    </div>
+                    <div class="login_option">
+                        <a href="#" type="button" class="login_option_text">
+                            <img src="/static/images/flat-color-icons_google.png" class="logo">Continue with Google</img></a>
+                    </div>
+                    <div class="login_option">
+                        <a href="#" type="button" class="login_option_text">
+                            <img src="/static/images/linkedin.png" class="logo">Continue with Linkedin</img></a>
+                    </div>
+                    <div class="login_option">
+                        <a href="#" type="button" class="login_option_text">
+                            <img src="/static/images/bi_apple.png" class="logo">Continue with Apple</img></a>
+                    </div>
+        
+                </form>
+            </div>
+            <div class="img_half">
+                <img src="/static/images/login_img.jpg" />
+            </div>
+        </div>
+        {% include 'base/login_footer.html' %}
+    </div>
+</body>
+
+{% endblock %}

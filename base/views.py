@@ -15,19 +15,22 @@ def home(request):
 def loginPage(request):
     page = 'login'
 
-    if request.user.is_authenticated:
-        return redirect('home')
+    # if request.user.is_authenticated:
+    #     return redirect('home')
 
     if request.method == 'POST':
-        username = request.POST.get('username').lower()
+        username_or_email = request.POST.get('email').lower()
         password = request.POST.get('password')
 
-        try:
-           user = User.objects.get(username=username)
-        except:
-            messages.error(request, 'User does not exist')
+        # try:
+        #    user = User.objects.get(username=username)
+        # except:
+        #     messages.error(request, 'User does not exist')
 
-        user = authenticate(request, username=username, password=password)
+        if '@' in username_or_email:
+            user = authenticate(request, email=username_or_email, password=password)
+        else:
+            user = authenticate(request, username=username_or_email, password=password)
 
         if user is not None:
             login(request, user)
@@ -37,7 +40,7 @@ def loginPage(request):
 
 
     context = {'page': page}
-    return render(request, 'base/login_register.html', context)
+    return render(request, 'base/login.html', context)
 
 
 def registerPage(request):
