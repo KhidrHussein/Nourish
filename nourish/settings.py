@@ -40,8 +40,11 @@ INSTALLED_APPS = [
 
     # APPS I INSTALLED
     'base.apps.BaseConfig',
+    'customusers.apps.CustomusersConfig',
     
 ]
+
+AUTH_USER_MODEL = 'customusers.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

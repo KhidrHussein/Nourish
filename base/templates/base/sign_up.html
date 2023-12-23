@@ -6,16 +6,12 @@
         <div class="login_main">
             <div class="details_half">
                 <a href="{% url 'home' %}"><img src="/static/images/logo.png"  class="nourish-logo"/></a>
-                <h1 class="header">Welcome back</h1>
-                <h3 class="sub-header">Log in to continue using Nourish</h3>
-                <form method="post" action="{% url 'login' %}">
+                <h1 class="header">Sign Up</h1>
+                <h3 class="sub-header">Let's get you started</h3>
+                <form method="post" action="{% url 'sign_up' %}">
                     {% csrf_token %}
                     <div>
-                        <input type="text" placeholder="Username or Email" name="username_email" class="credentials" required>
-                    </div>
-                    <div style="padding-bottom: 1em;">
-                        <input type="password" placeholder="Password" name="password" class="credentials" required>
-                        <a href="#" class="f-pass">Forgot password?</a>
+                        <input type="email" placeholder="Email" name="email" class="credentials" required>
                     </div>
                     <div>
                         <button type="submit" style="border-radius: 5px;
@@ -31,15 +27,16 @@
                         font-size: 13px;
                         font-style: normal;
                         font-weight: 300;
-                        line-height: 140%; "><a href="{% url 'register' %}" class="no-acc-p">Don't have an account? 
-                            <span class="su"> Sign up</span></a></p>
+                        line-height: 140%; "><a href="{% url 'login' %}" class="no-acc-p">Already have an account? 
+                            <span class="su"> Log in</span></a></p>
                     </div>
+                   
                     {% include 'base/login_option.html' %}
         
                 </form>
             </div>
             <div class="img_half">
-                <img src="/static/images/login_img.jpg" />
+                <img src="/static/images/sign_up_img.jpg" />
             </div>
         </div>
         {% include 'base/login_footer.html' %}
