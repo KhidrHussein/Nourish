@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # APPS I INSTALLED
     'base.apps.BaseConfig',
     'customusers.apps.CustomusersConfig',
+    'rest_framework',
     
 ]
 
