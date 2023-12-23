@@ -5,13 +5,55 @@ from django.contrib import messages
 # from django.contrib.auth.forms import UserCreationForm
 from .forms import UserForm, RegistrationForm, LoginForm
 from customusers.models import CustomUser
+from .models import Category, Payment, Product, Order, OrderItem
+from .serializers import PaymentSerializer, ProductSerializer, OrderSerializer, OrderItemSerializer, CategorySerializer
+from rest_framework import viewsets
+
 
 # Create your views here.
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list` and `retrieve` actions.
+    """
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class OrderViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list` and `retrieve` actions.
+    """
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
+class OrderItemViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list` and `retrieve` actions.
+    """
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
+
+
+class ProductViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list` and `retrieve` actions.
+    """
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+
+class PaymentViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list` and `retrieve` actions.
+    """
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
 
 
 def home(request):
     return render(request, 'base/home.html')
-
 
 
 def sign_up(request):

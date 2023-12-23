@@ -3,21 +3,6 @@ from customusers.models import CustomUser
 
 # Create your models here.
 
-# User Model
-# class User(models.Model):
-#     username = models.CharField(max_length=100)
-#     email = models.EmailField(unique=True)
-#     password = models.CharField(max_length=255)  # Use a hashed password, consider using Django's built-in authentication
-#     first_name = models.CharField(max_length=255)
-#     last_name = models.CharField(max_length=255)
-
-#     address = models.TextField()
-#     phone_number = models.CharField(max_length=20)
-
-#     def __str__(self):
-#         return self.username
-    
-
 #Product Models
 
 class Category(models.Model):
