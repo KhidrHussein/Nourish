@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-# from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 # from django.contrib.auth.forms import UserCreationForm
@@ -64,6 +63,8 @@ class NewsletterSubscriptionViewSet(viewsets.ModelViewSet):
 def home(request):
     return render(request, 'base/home.html')
 
+
+# The views used to render the templates for sign in, register and login
 
 # def sign_up(request):
 #     if request.method == 'POST':
