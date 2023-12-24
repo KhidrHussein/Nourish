@@ -11,7 +11,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path('api/customusers/sign_up/', CustomUserViewSet.as_view({'post': 'sign_up'}), name='sign_up'),
-    path('api/customusers/register/', CustomUserViewSet.as_view({'post': 'register'}), name='register'),
-    path('api/customusers/log_in/', CustomUserViewSet.as_view({'post': 'log_in'}), name='log_in'),
+    path('customusers/sign_up/', CustomUserViewSet.as_view({'post': 'sign_up'}), name='sign_up'),
+    path('customusers/register/', CustomUserViewSet.as_view({'post': 'register'}), name='register'),
+    path('customusers/log_in/', CustomUserViewSet.as_view({'post': 'log_in'}), name='log_in'),
 ]
