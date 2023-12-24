@@ -54,3 +54,12 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment {self.id}"
+
+
+# Newsletter Subscription
+
+class NewsletterSubscription(models.Model):
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.email
