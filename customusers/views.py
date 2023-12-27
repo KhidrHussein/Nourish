@@ -20,7 +20,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     @action(detail=False, methods=['post'], permission_classes=[AllowAny])
     def sign_up(self, request):
