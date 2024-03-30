@@ -11,6 +11,7 @@ router.register(r'order-item', OrderItemViewSet, basename='order-item')
 router.register(r'product', ProductViewSet, basename='product')
 router.register(r'payment', PaymentViewSet, basename='payment')
 router.register(r'newsletter-subscription', NewsletterSubscriptionViewSet, basename='newsletter-subscription')
+router.register(r'paystack-payments', PaymentViewSet, basename='paystack-payment')
 
 
 urlpatterns = [
