@@ -31,6 +31,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=20)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    # otp_totp_secret_key = models.CharField(max_length=160, null=True, blank=True)
 
     objects = CustomUserManager()
 

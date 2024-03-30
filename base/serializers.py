@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Product, Order, OrderItem, Payment, NewsletterSubscription
+from .models import Category, Product, Order, OrderItem, Payment, NewsletterSubscription, Cart
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,3 +35,9 @@ class NewsletterSubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewsletterSubscription
         fields = ['email']
+
+
+class CartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = ['id', 'user', 'product', 'quantity']
