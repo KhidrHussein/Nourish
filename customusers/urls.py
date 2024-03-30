@@ -7,7 +7,9 @@ router.register(r'users', CustomUserViewSet, basename='user')
 
 urlpatterns = [
     path('api/customusers/', include(router.urls)),
-    # Add other URL patterns as needed
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
+    path('auth/', include('djoser.urls.jwt')),
 ]
 
 urlpatterns += [
