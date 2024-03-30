@@ -1,16 +1,21 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 # from django.contrib.auth.forms import UserCreationForm
 # from .forms import UserForm, RegistrationForm, LoginForm
-from customusers.models import CustomUser
-from .models import Category, Payment, Product, Order, OrderItem, NewsletterSubscription
-from .serializers import PaymentSerializer, ProductSerializer, OrderSerializer, OrderItemSerializer, CategorySerializer, NewsletterSubscriptionSerializer
-from customusers.serializers import CustomUserSerializer
+# from customusers.models import CustomUser
+from .models import Category, Payment, Product, Order, OrderItem, NewsletterSubscription, Cart
+from .serializers import PaymentSerializer, ProductSerializer, OrderSerializer, OrderItemSerializer, CategorySerializer, NewsletterSubscriptionSerializer, CartSerializer
 from rest_framework import viewsets
-from rest_framework.views import APIView
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+import logging
+from nourish import settings
 
 
 # Create your views here.
@@ -55,9 +60,99 @@ class PaymentViewSet(viewsets.ModelViewSet):
     serializer_class = PaymentSerializer
 
 
+class CartViewSet(viewsets.ModelViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            return Cart.objects.filter(user=user)
+        else:
+            # Handle the case where the user is anonymous
+            # For example, you could return an empty queryset
+            return Cart.objects.none()
+
+    def create(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().create(request, *args, **kwargs)
+        else:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    def update(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().update(request, *args, **kwargs)
+        else:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    def destroy(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().destroy(request, *args, **kwargs)
+        else:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+# class NewsletterSubscriptionViewSet(viewsets.ModelViewSet):
+#     queryset = NewsletterSubscription.objects.all()
+#     serializer_class = NewsletterSubscriptionSerializer
+#     data = {'key': 'value'}
+#     response = Response(data)
+
+    
+
+#     # Allow CORS
+#     response["Access-Control-Allow-Origin"] = "http://localhost:5500", "http://localhost:3000"
+#     response["Access-Control-Allow-Methods"] = "POST"
+#     response["Access-Control-Allow-Headers"] = "Content-Type"
+
+
 class NewsletterSubscriptionViewSet(viewsets.ModelViewSet):
     queryset = NewsletterSubscription.objects.all()
     serializer_class = NewsletterSubscriptionSerializer
+
+    @action(detail=False, methods=['post'])
+    def create_subscription(self, request):
+        try:
+            serializer = NewsletterSubscriptionSerializer(data=request.data)
+
+            if serializer.is_valid():
+                # Save the subscription
+                subscription = serializer.save()
+                print("subscription saved")
+
+                # Send confirmation email
+                subject = 'Subscription Confirmation'
+                message = f'Thank you for signing up!!!'
+                from_email = settings.EMAIL_HOST_USER
+                recipient_list = [subscription.email]
+
+                print("Mail about to send")
+                send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+                print("Mail sent!")
+
+                data = {'success': True, 'message': 'Subscription created successfully'}
+                return Response(data, status=status.HTTP_201_CREATED)
+            else:
+                # errors = serializer.errors
+                # data = {'success': False, 'errors': errors}
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        except (ValidationError, IntegrityError) as e:
+            print(f"Caught exception: {e}")
+            if 'unique constraint' in str(e).lower() and 'email' in str(e).lower():
+                # Custom error message for duplicate email
+                data = {'success': False, 'message': 'Email address is already subscribed'}
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                # Handle other ValidationError cases
+                data = {'success': False, 'message': 'Validation error while processing the request'}
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            # Log the exception for debugging purposes
+            print(f"An error occurred: {str(e)}")
+            data = {'success': False, 'message': 'An error occurred while processing the request'}
+            return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 def home(request):
