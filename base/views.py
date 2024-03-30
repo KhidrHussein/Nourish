@@ -174,10 +174,10 @@ class PaymentViewSet(viewsets.ViewSet):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         amount_in_naira = serializer.validated_data.get('amount')
-        ammount_in_kobo = amount_in_naira * 100
+        amount_in_kobo = amount_in_naira * 100
         email = serializer.validated_data.get('email')
         # Initialize payment on Paystack   
-        response = Transaction.initialize(amount=ammount_in_kobo, email=email, currency='NGN', callback_url='http://127.0.0.1:8000/api/base/paystack-payments')
+        response = Transaction.initialize(amount=amount_in_kobo, email=email, currency='NGN', callback_url='http://127.0.0.1:8000/api/base/paystack-payments')
      
         # Redirect user to Paystack UI for payment
         payment_url = response['data']['authorization_url']
