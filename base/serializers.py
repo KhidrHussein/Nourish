@@ -25,13 +25,18 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PaymentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Payment
-        fields = '__all__'
+# class PaymentSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Payment
+#         fields = '__all__'
 
 
 class NewsletterSubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewsletterSubscription
         fields = ['email']
+
+
+class PaymentSerializer(serializers.Serializer):
+    amount = serializers.IntegerField()
+    email = serializers.EmailField()

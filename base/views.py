@@ -11,7 +11,13 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
+import paystack
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from django.http import HttpResponse
+from paystackapi.paystack import Paystack
+from paystackapi.transaction import Transaction
 
 # Create your views here.
 
@@ -62,6 +68,35 @@ class NewsletterSubscriptionViewSet(viewsets.ModelViewSet):
 
 def home(request):
     return render(request, 'base/home.html')
+
+paystack_secret_key = settings.PAYSTACK_SECRET_KEY
+transaction = Transaction(secret_key=paystack_secret_key)
+
+class PaymentViewSet(viewsets.ViewSet):
+    serializer_class = PaymentSerializer
+
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        amount_in_naira = serializer.validated_data.get('amount')
+        ammount_in_kobo = amount_in_naira * 100
+        email = serializer.validated_data.get('email')
+        # Initialize payment on Paystack   
+        response = Transaction.initialize(amount=ammount_in_kobo, email=email, currency='NGN', callback_url='http://127.0.0.1:8000/api/base/paystack-payments')
+     
+        # Redirect user to Paystack UI for payment
+        payment_url = response['data']['authorization_url']
+        return redirect(payment_url)
+
+
+    # def retrieve(self, request, pk=None):
+    #     reference = pk
+    #     response = Transaction.verify(reference=reference)
+    #     return Response(response)
+    
+# def payment_callback(request):
+#     # Handle the payment callback logic here
+#     return HttpResponse(status=200)
 
 
 # The views used to render the templates for sign in, register and login
