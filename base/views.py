@@ -196,7 +196,6 @@ class NewsletterSubscriptionViewSet(viewsets.ModelViewSet):
 def home(request):
     return render(request, 'base/home.html')
 
-# paystack_secret_key = 'sk_test_4261d486669d3de6025b71eb547ce378d425e12f'
 paystack_secret_key = settings.PAYSTACK_SECRET_KEY
 transaction = Transaction(secret_key=paystack_secret_key)
 
