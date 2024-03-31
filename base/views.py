@@ -7,8 +7,8 @@ from django.core.exceptions import ValidationError
 # from django.contrib.auth.forms import UserCreationForm
 # from .forms import UserForm, RegistrationForm, LoginForm
 # from customusers.models import CustomUser
-from .models import Category, Payment, Product, Order, OrderItem, NewsletterSubscription, Cart
-from .serializers import PaymentSerializer, ProductSerializer, OrderSerializer, OrderItemSerializer, CategorySerializer, NewsletterSubscriptionSerializer, CartSerializer
+from .models import Category, Payment, Product, Order, OrderItem, NewsletterSubscription, Cart, CartItem
+from .serializers import PaymentSerializer, ProductSerializer, OrderSerializer, OrderItemSerializer, CategorySerializer, NewsletterSubscriptionSerializer, CartSerializer, CartItemSerializer
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
@@ -76,27 +76,59 @@ class CartViewSet(viewsets.ModelViewSet):
         if user.is_authenticated:
             return Cart.objects.filter(user=user)
         else:
-            # Handle the case where the user is anonymous
-            # For example, you could return an empty queryset
             return Cart.objects.none()
+        
 
-    def create(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return super().create(request, *args, **kwargs)
+    @action(detail=False, methods=['get'])
+    def view_cart_items(self, request):
+        user = request.user
+        cart = Cart.objects.filter(user=user).first()
+        if cart:
+            cart_items = cart.items.all()
+            serializer = CartItemSerializer(cart_items, many=True)
+            return Response(serializer.data)
         else:
-            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'message': 'Cart is empty'})
 
-    def update(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return super().update(request, *args, **kwargs)
-        else:
-            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+    @action(detail=True, methods=['post'])
+    def add_to_cart(self, request, pk=None):
+        product = Product.objects.get(pk=pk)
+        user = request.user
+        quantity = request.data.get('quantity', 1)
 
-    def destroy(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return super().destroy(request, *args, **kwargs)
+        # Get the user's cart
+        cart, created = Cart.objects.get_or_create(user=user)
+
+        # Check if the product is already in the cart
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+
+        # If the item is already in the cart, increment the quantity alone
+        if not created:
+            cart_item.quantity += quantity
         else:
-            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+            cart_item.quantity = quantity
+        cart_item.save()
+
+        serializer = CartSerializer(cart)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+    @action(detail=True, methods=['post'])
+    def update_quantity(self, request, pk=None):
+        cart_item = CartItem.objects.get(pk=pk)
+        quantity = request.data.get('quantity')
+        cart_item.quantity = quantity
+        cart_item.save()
+        serializer = CartSerializer(cart_item)
+        return Response(serializer.data)
+
+
+    @action(detail=False, methods=['get'])
+    def calculate_total_price(self, request):
+        user = request.user
+        cart_items = CartItem.objects.filter(cart__user=user)
+        total_price = sum(item.total_price for item in cart_items)
+        return Response({'total_price': total_price})
 
 
 # class NewsletterSubscriptionViewSet(viewsets.ModelViewSet):
@@ -164,6 +196,7 @@ class NewsletterSubscriptionViewSet(viewsets.ModelViewSet):
 def home(request):
     return render(request, 'base/home.html')
 
+# paystack_secret_key = 'sk_test_4261d486669d3de6025b71eb547ce378d425e12f'
 paystack_secret_key = settings.PAYSTACK_SECRET_KEY
 transaction = Transaction(secret_key=paystack_secret_key)
 
@@ -173,21 +206,27 @@ class PaymentViewSet(viewsets.ViewSet):
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        amount_in_naira = serializer.validated_data.get('amount')
-        amount_in_kobo = amount_in_naira * 100
+        amount_in_kobo = serializer.validated_data.get('amount')
+        amount_in_naira = amount_in_kobo * 100
         email = serializer.validated_data.get('email')
-        # Initialize payment on Paystack   
-        response = Transaction.initialize(amount=amount_in_kobo, email=email, currency='NGN', callback_url='http://127.0.0.1:8000/api/base/paystack-payments')
+
+       # Initialize payment on Paystack
+        response = Transaction.initialize(amount=amount_in_naira, email=email, currency='NGN', callback_url='http://127.0.0.1:8000/api/base/paystack-payments/')
+        print(response)
      
-        # Redirect user to Paystack UI for payment
-        payment_url = response['data']['authorization_url']
-        return redirect(payment_url)
+        # Check if the response contains the 'data' key
+        if 'data' in response and 'authorization_url' in response['data']:
+            payment_url = response['data']['authorization_url']
+            return redirect(payment_url)
+        else:
+            # Handle the case where the response is missing the expected keys
+            return Response({'error': 'Invalid response from Paystack'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-    # def retrieve(self, request, pk=None):
-    #     reference = pk
-    #     response = Transaction.verify(reference=reference)
-    #     return Response(response)
+    def retrieve(self, request, pk=None):
+        reference = pk
+        response = Transaction.verify(reference=reference)
+        return Response(response)
     
 # def payment_callback(request):
 #     # Handle the payment callback logic here

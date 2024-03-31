@@ -9,10 +9,10 @@ router.register(r'category', CategoryViewSet, basename='category')
 router.register(r'order', OrderViewSet, basename='order')
 router.register(r'order-item', OrderItemViewSet, basename='order-item')
 router.register(r'product', ProductViewSet, basename='product')
-router.register(r'payment', PaymentViewSet, basename='payment')
+# router.register(r'payment', PaymentViewSet, basename='payment')
 router.register(r'newsletter-subscription', NewsletterSubscriptionViewSet, basename='newsletter-subscription')
 router.register(r'cart', CartViewSet, basename='cart')
-router.register(r'paystack-payments', PaymentViewSet, basename='paystack-payment')
+router.register(r'paystack-payments', PaymentViewSet, basename='paystack-payments')
 
 
 urlpatterns = [

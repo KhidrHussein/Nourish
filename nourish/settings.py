@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-m8%g0t7dhpd0@mplj@ruf4o@+$+uq7okc^-58)-35-64r#24&i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'hyena-tops-rooster.ngrok-free.app', 'c1b5-102-88-33-124.ngrok-free.appgit']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'hyena-tops-rooster.ngrok-free.app', 'c1b5-102-88-33-124.ngrok-free.app']
 
 
 # Application definition
@@ -182,14 +183,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Email Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'husseinkhidr3@gmail.com'
-EMAIL_HOST_PASSWORD = 'lfrfvbguifvkjpvo'
-DEFAULT_FROM_EMAIL = 'husseinkhidr3@gmail.com'
-EMAIL_TIMEOUT = 10
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'husseinkhidr3@gmail.com'
+# EMAIL_HOST_PASSWORD = 'lfrfvbguifvkjpvo'
+# DEFAULT_FROM_EMAIL = 'husseinkhidr3@gmail.com'
+# EMAIL_TIMEOUT = 10
 
 
 LOGGING = {
@@ -211,3 +212,7 @@ LOGGING = {
         },
     },
 }
+
+# Paystack configuration
+PAYSTACK_SECRET_KEY = os.getenv('PAYSTACK_SECRET_KEY')
+PAYSTACK_PUBLIC_KEY = os.getenv('PAYSTACK_PUBLIC_KEY')
