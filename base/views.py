@@ -227,9 +227,50 @@ class PaymentViewSet(viewsets.ViewSet):
         response = Transaction.verify(reference=reference)
         return Response(response)
     
-# def payment_callback(request):
-#     # Handle the payment callback logic here
-#     return HttpResponse(status=200)
+# Test this instead after paying for framer!!!
+
+# from django.http import JsonResponse
+# import json
+
+# class PaymentViewSet(viewsets.ViewSet):
+#     serializer_class = PaymentSerializer
+
+#     def create(self, request):
+#         serializer = self.serializer_class(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         amount_in_kobo = serializer.validated_data.get('amount')
+#         amount_in_naira = amount_in_kobo * 100
+#         email = serializer.validated_data.get('email')
+
+#         # Initialize payment on Paystack
+#         response = Transaction.initialize(amount=amount_in_naira, email=email, currency='NGN', callback_url='http://127.0.0.1:8000/api/base/paystack-payments/')
+#         print(response)
+     
+#         # Check if the response contains the 'data' key
+#         if 'data' in response and 'authorization_url' in response['data']:
+#             payment_url = response['data']['authorization_url']
+#             return JsonResponse({'payment_url': payment_url})
+#         else:
+#             # Handle the case where the response is missing the expected keys
+#             return JsonResponse({'error': 'Invalid response from Paystack'}, status=500)
+
+
+# @csrf_exempt
+# def paystack_webhook(request):
+#     # Verify the webhook is from Paystack
+#     if request.method == 'POST':
+#         payload = json.loads(request.body)
+#         event = payload.get('event')
+#         data = payload.get('data')
+#         if event == 'charge.success' and data:
+#             # Payment was successful
+#             # Redirect to success URL in frontend or handle success logic
+#             return JsonResponse({'message': 'Payment successful'})
+#         elif event == 'charge.failed' and data:
+#             # Payment failed
+#             # Redirect to failure URL in frontend or handle failure logic
+#             return JsonResponse({'message': 'Payment failed'})
+#     return JsonResponse({'message': 'Invalid request'}, status=400)
 
 
 # The views used to render the templates for sign in, register and login

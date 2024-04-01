@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -214,5 +215,12 @@ LOGGING = {
 }
 
 # Paystack configuration
-PAYSTACK_SECRET_KEY = os.getenv('PAYSTACK_SECRET_KEY')
-PAYSTACK_PUBLIC_KEY = os.getenv('PAYSTACK_PUBLIC_KEY')
+# PAYSTACK_SECRET_KEY = os.getenv('PAYSTACK_SECRET_KEY')
+# PAYSTACK_PUBLIC_KEY = os.getenv('PAYSTACK_PUBLIC_KEY')
+
+# print("PAYSTACK_SECRET_KEY:", os.getenv('PAYSTACK_SECRET_KEY'))
+
+
+PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY')
+# print("PAYSTACK_SECRET_KEY:", PAYSTACK_SECRET_KEY)
+
