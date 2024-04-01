@@ -64,33 +64,6 @@ class NewsletterSubscription(models.Model):
     def __str__(self):
         return self.email
     
-
-# Cart Model
-    
-# class Cart(models.Model):
-#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-#     quantity = models.IntegerField(default=1)
-
-#     def __str__(self):
-#         return str(self.user.username)
-
-#     @property
-#     def total_price(self):
-#         return self.product.price * self.quantity
-    
-
-# class CartItem(models.Model):
-#     cart = models.ForeignKey('Cart', on_delete=models.CASCADE, related_name='items')
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-#     quantity = models.IntegerField(default=1)
-
-#     def __str__(self):
-#         return f"{self.quantity}x {self.product.name}"
-
-#     @property
-#     def total_price(self):
-#         return self.product.price * self.quantity
     
 class Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
