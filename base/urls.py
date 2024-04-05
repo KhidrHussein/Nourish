@@ -18,6 +18,8 @@ router.register(r'paystack-payments', PaymentViewSet, basename='paystack-payment
 urlpatterns = [
     path('api/base/', include(router.urls)),
     path('', views.home,  name="home"),
+    path('api/token/', obtain_auth_token, name='api_token_auth'),
+
 
     # path('login', views.log_in, name="login"),
     # path('sign_up', views.sign_up, name="sign_up"),
