@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,7 +44,7 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'customusers.apps.CustomusersConfig',
     'rest_framework',
-    # 'rest_framework.authtoken',
+    'rest_framework.authtoken',
     # 'djoser',
     # 'rest_framework_simplejwt',
     # 'django_otp',
@@ -53,12 +54,13 @@ INSTALLED_APPS = [
     
 ]
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework.authentication.TokenAuthentication',
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-***REMOVED***,
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 # SIMPLE_JWT = {
 #    'AUTH_HEADER_TYPES': ('JWT',),
@@ -95,6 +97,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:5500',
     'http://127.0.0.1:3000',
+    # 'https://nourishng.framer.website/',
 ]
 
 ROOT_URLCONF = 'nourish.urls'
@@ -151,6 +154,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'rest_framework.authentication.TokenAuthentication',
     # 'django_otp.backends.OTPAuthenticationBackend',
 ]
 
@@ -214,5 +218,12 @@ LOGGING = {
 }
 
 # Paystack configuration
-PAYSTACK_SECRET_KEY = os.getenv('PAYSTACK_SECRET_KEY')
-PAYSTACK_PUBLIC_KEY = os.getenv('PAYSTACK_PUBLIC_KEY')
+# PAYSTACK_SECRET_KEY = os.getenv('PAYSTACK_SECRET_KEY')
+# PAYSTACK_PUBLIC_KEY = os.getenv('PAYSTACK_PUBLIC_KEY')
+
+# print("PAYSTACK_SECRET_KEY:", os.getenv('PAYSTACK_SECRET_KEY'))
+
+
+PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY')
+# print("PAYSTACK_SECRET_KEY:", PAYSTACK_SECRET_KEY)
+
